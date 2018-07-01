@@ -1,0 +1,12 @@
+= Artrifactory Rest Plugin
+:source-highlighter: prettify
+:blank: pass:[ +]
+:latestRevision: 1.0.0
+:icons: font
+:toc:
+
+NOTE: This library requires Gradle 4 and JDK 8
+
+NOTE: This library is under development and not final released.
+It supports currently only the Docker promote API of artifactory.
+Don't use this plugin in a production environment.
