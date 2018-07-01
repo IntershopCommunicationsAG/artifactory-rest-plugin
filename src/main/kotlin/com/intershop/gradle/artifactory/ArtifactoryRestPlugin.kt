@@ -27,8 +27,8 @@ import org.gradle.api.Project
 class ArtifactoryRestPlugin : Plugin<Project> {
 
     companion object {
-        internal const val TASKDESCRIPTION = "Use rest api of Artifactory to handle artifacts"
-        internal const val COMPONENT_GROUP_NAME = "Artifactory Tasks"
+        internal const val TASKDESCRIPTION = "Use Docker Promote rest api of Artifactory to handle Docker Images"
+        const val COMPONENT_GROUP_NAME = "Artifactory Tasks"
 
         /**
          * Extension name of this plugin.
@@ -49,18 +49,19 @@ class ArtifactoryRestPlugin : Plugin<Project> {
         const val REPO_ACCESSTOKEN_PRJ = "artifactoryAccessToken"
 
         fun getVaribale(project: Project, envVar: String, projectVar: String, defaultValue: String): String {
+            var returnValue = defaultValue
             if(System.getProperty(envVar) != null) {
                 project.logger.debug("Specified from system property {}.", envVar)
-                return System.getProperty(envVar).trim()
+                returnValue = System.getProperty(envVar).trim()
             } else if(System.getenv(envVar) != null) {
                 project.logger.debug("Specified from system environment property {}.", envVar)
-                return System.getenv(envVar).toString().trim()
+                returnValue = System.getenv(envVar).toString().trim()
             } else if(project.hasProperty(projectVar) && project.property(projectVar).toString().trim().isNotEmpty()) {
                 project.logger.debug("Specified from project property {}.", projectVar)
-                return project.property(projectVar).toString().trim()
+                returnValue = project.property(projectVar).toString().trim()
             }
 
-            return defaultValue
+            return returnValue
         }
     }
 
@@ -82,7 +83,8 @@ class ArtifactoryRestPlugin : Plugin<Project> {
             extension.accesstoken = getVaribale(project, REPO_ACCESSTOKEN_ENV, REPO_ACCESSTOKEN_PRJ, "")
 
             if(tasks.findByName("promote") == null) {
-                tasks.create("promote", Promote::class.java)
+                val task = tasks.create("promote", Promote::class.java)
+                task.description = TASKDESCRIPTION
             }
         }
     }

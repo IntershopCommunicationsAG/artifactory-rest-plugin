@@ -18,28 +18,22 @@
 
 package com.intershop.gradle.artifactory.tasks
 
-import org.jfrog.artifactory.client.ArtifactoryClientBuilder
 import com.intershop.gradle.artifactory.ArtifactoryExtension
 import com.intershop.gradle.artifactory.ArtifactoryRestPlugin
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.InvalidUserDataException
-import org.gradle.api.Task
-import org.gradle.api.specs.Spec
 import org.gradle.api.tasks.TaskAction
 import org.jfrog.artifactory.client.Artifactory
+import org.jfrog.artifactory.client.ArtifactoryClientBuilder
 import org.jfrog.artifactory.client.ArtifactoryRequest
 
 abstract class AbstractArtifactoryRestTask: DefaultTask() {
 
     init {
-        this.setOnlyIf( object: Spec<Task> {
-            override fun isSatisfiedBy(task: Task): Boolean  {
-                kotlin.io.println("----------")
-                kotlin.io.println(client)
-                return client != null
-            }
-        })
+        this.setOnlyIf {
+            client != null
+        }
     }
 
     @Suppress("unused")
@@ -50,32 +44,31 @@ abstract class AbstractArtifactoryRestTask: DefaultTask() {
             val response = client?.restCall(request)
             if (response != null && ! response.isSuccessResponse) {
                 response.rawBody
-                throw GradleException("Request ${request} failed!" + response.rawBody)
+                throw GradleException("Request $request failed!" + response.rawBody)
             }
         }
     }
 
     abstract val request: ArtifactoryRequest
 
-    val client: Artifactory?
+    private val client: Artifactory?
         get() {
             val extension = project.extensions.findByName(ArtifactoryRestPlugin.EXTENSION_NAME)
             if(extension != null && extension is ArtifactoryExtension) {
-                if(extension.artifactoryURL.isNotBlank()) {
-                    val artifactoryExtension = extension
+                return if(extension.artifactoryURL.isNotBlank()) {
                     val artifactory = ArtifactoryClientBuilder.create()
-                            .setUrl(artifactoryExtension.artifactoryURL)
-                    if (artifactoryExtension.username.isNotBlank() && artifactoryExtension.password.isNotBlank()) {
-                        artifactory.setUsername(artifactoryExtension.username)
-                        artifactory.setPassword(artifactoryExtension.password)
+                            .setUrl(extension.artifactoryURL)
+                    if (extension.username.isNotBlank() && extension.password.isNotBlank()) {
+                        artifactory.username = extension.username
+                        artifactory.password = extension.password
                     }
-                    if (artifactoryExtension.accesstoken.isNotBlank()) {
-                        artifactory.setAccessToken(artifactoryExtension.accesstoken)
+                    if (extension.accesstoken.isNotBlank()) {
+                        artifactory.accessToken = extension.accesstoken
                     }
-                    return artifactory.build()
+                    artifactory.build()
                 } else {
                     project.logger.warn("There is no URL specified '{}'!", ArtifactoryRestPlugin.EXTENSION_NAME)
-                    return null
+                    null
                 }
             } else {
                 project.logger.warn("No extension '{}' found!", ArtifactoryRestPlugin.EXTENSION_NAME)

@@ -18,8 +18,6 @@ package com.intershop.gradle.artifactory
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
-import java.util.zip.ZipEntry
-import java.util.zip.ZipInputStream
 import kotlin.reflect.KProperty
 
 /**

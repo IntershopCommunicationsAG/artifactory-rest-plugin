@@ -18,6 +18,7 @@
 
 package com.intershop.gradle.artifactory.tasks.docker
 
+import com.intershop.gradle.artifactory.ArtifactoryRestPlugin
 import com.intershop.gradle.artifactory.getValue
 import com.intershop.gradle.artifactory.setValue
 import com.intershop.gradle.artifactory.tasks.AbstractArtifactoryRestTask
@@ -38,6 +39,7 @@ open class Promote: AbstractArtifactoryRestTask() {
 
     init {
         operationProperty.set("")
+        group = ArtifactoryRestPlugin.COMPONENT_GROUP_NAME
     }
 
     @Suppress("unused")
@@ -101,7 +103,7 @@ open class Promote: AbstractArtifactoryRestTask() {
                     "targetTag" to targetTag,
                     "copy" to ops
             )
-            return ArtifactoryRequestImpl().apiUrl("api/docker/${repoKey}/v2/promote")
+            return ArtifactoryRequestImpl().apiUrl("api/docker/$repoKey/v2/promote")
                     .method(ArtifactoryRequest.Method.POST)
                     .requestType(ArtifactoryRequest.ContentType.JSON)
                     .responseType(ArtifactoryRequest.ContentType.JSON)

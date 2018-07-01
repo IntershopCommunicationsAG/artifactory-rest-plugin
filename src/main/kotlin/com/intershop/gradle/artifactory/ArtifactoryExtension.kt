@@ -45,6 +45,7 @@ open class ArtifactoryExtension @Inject constructor(project: Project) {
      *
      * @property artifactoryURLProvider the provider of the artifactory URL
      */
+    @Suppress("unused")
     val artifactoryURLProvider: Provider<String?>
         get() = artifactoryURLProperty
 
@@ -60,6 +61,7 @@ open class ArtifactoryExtension @Inject constructor(project: Project) {
      *
      * @property usernameProvider the provider of the artifactory username
      */
+    @Suppress("unused")
     val usernameProvider: Provider<String?>
         get() = usernameProperty
 
@@ -75,6 +77,7 @@ open class ArtifactoryExtension @Inject constructor(project: Project) {
      *
      * @property passwordProvider the provider of the artifactory user password
      */
+    @Suppress("unused")
     val passwordProvider: Provider<String?>
         get() = passwordProperty
 
@@ -90,6 +93,7 @@ open class ArtifactoryExtension @Inject constructor(project: Project) {
      *
      * @property accesstokenProvider the provider of the artifactory accesstoken
      */
+    @Suppress("unused")
     val accesstokenProvider: Provider<String?>
         get() = accesstokenProperty
 
