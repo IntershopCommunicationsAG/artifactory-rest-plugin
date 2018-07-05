@@ -43,7 +43,7 @@ class ArtifactoryRestPlugin : Plugin<Project> {
         const val REPO_USER_NAME_PRJ = "artifactoryUserName"
 
         const val REPO_USER_PASSWORD_ENV = "ARTIFACTORYUSERPASSWD"
-        const val REPO_USER_PASSWORD_PRJ = "artifactoryUserPASSWD"
+        const val REPO_USER_PASSWORD_PRJ = "artifactoryUserPasswd"
 
         const val REPO_ACCESSTOKEN_ENV = "ARTIFACTORYACCESSTOKEN"
         const val REPO_ACCESSTOKEN_PRJ = "artifactoryAccessToken"

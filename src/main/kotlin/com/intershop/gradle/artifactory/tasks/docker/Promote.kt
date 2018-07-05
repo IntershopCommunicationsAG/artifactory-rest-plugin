@@ -96,14 +96,14 @@ open class Promote: AbstractArtifactoryRestTask() {
             val ops = if(operation.equals("move", true))  "false" else "true"
 
             val requestObj = hashMapOf(
-                    "targetRepo" to targetRepo,
-                    "repoKey" to repoKey,
-                    "dockerRepository" to imagePath,
-                    "tag" to tag,
-                    "targetTag" to targetTag,
+                    "targetRepo" to targetRepo.trim(),
+                    "repoKey" to repoKey.trim(),
+                    "dockerRepository" to imagePath.trim(),
+                    "tag" to tag.trim(),
+                    "targetTag" to targetTag.trim(),
                     "copy" to ops
             )
-            return ArtifactoryRequestImpl().apiUrl("api/docker/$repoKey/v2/promote")
+            return ArtifactoryRequestImpl().apiUrl("api/docker/${repoKey.trim()}/v2/promote")
                     .method(ArtifactoryRequest.Method.POST)
                     .requestType(ArtifactoryRequest.ContentType.JSON)
                     .responseType(ArtifactoryRequest.ContentType.JSON)
