@@ -81,11 +81,6 @@ class ArtifactoryRestPlugin : Plugin<Project> {
             extension.username = getVaribale(project, REPO_USER_NAME_ENV, REPO_USER_NAME_PRJ, "")
             extension.password = getVaribale(project, REPO_USER_PASSWORD_ENV, REPO_USER_PASSWORD_PRJ, "")
             extension.accesstoken = getVaribale(project, REPO_ACCESSTOKEN_ENV, REPO_ACCESSTOKEN_PRJ, "")
-
-            if(tasks.findByName("promote") == null) {
-                val task = tasks.create("promote", Promote::class.java)
-                task.description = TASKDESCRIPTION
-            }
         }
     }
 }

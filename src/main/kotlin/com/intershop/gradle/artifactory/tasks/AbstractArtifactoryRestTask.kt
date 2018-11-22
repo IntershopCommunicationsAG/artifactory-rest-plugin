@@ -18,14 +18,9 @@
 
 package com.intershop.gradle.artifactory.tasks
 
-import com.intershop.gradle.artifactory.ArtifactoryExtension
-import com.intershop.gradle.artifactory.ArtifactoryRestPlugin
-import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.tasks.TaskAction
-import org.jfrog.artifactory.client.Artifactory
-import org.jfrog.artifactory.client.ArtifactoryClientBuilder
 import org.jfrog.artifactory.client.ArtifactoryRequest
 
 abstract class AbstractArtifactoryRestTask: AbstractArtifactoryTask() {

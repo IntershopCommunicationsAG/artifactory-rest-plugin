@@ -25,7 +25,7 @@ import org.gradle.api.InvalidUserDataException
 import org.gradle.api.tasks.*
 import java.io.File
 
-open class Upload : AbstractArtifactoryTask() {
+open class SimpleUpload : AbstractArtifactoryTask() {
 
     private val targetRepoProperty = project.objects.property(String::class.java)
     private val targetPathProperty = project.objects.property(String::class.java)
@@ -45,7 +45,7 @@ open class Upload : AbstractArtifactoryTask() {
 
     @get:SkipWhenEmpty
     @get:InputFile
-    var artifact: File?
+    var artifact: File
         get() = artifactProperty.get().asFile
         set(value) = artifactProperty.set(value)
 

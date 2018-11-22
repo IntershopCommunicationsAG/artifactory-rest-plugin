@@ -31,10 +31,12 @@ class IntPromoteSpec extends AbstractIntegrationSpec {
             id 'com.intershop.gradle.artifactory.rest'
         }
         
+        import com.intershop.gradle.artifactory.tasks.docker.Promote
+        
         artifactory {
         }
         
-        promote {
+        task promote(type: Promote, group: 'Docker') {
             targetRepo = 'local-docker-dev'
             repoKey = 'local-docker-snapshots'
             imagePath = 'icm-test/iste-execution'
