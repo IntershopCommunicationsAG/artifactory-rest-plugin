@@ -91,11 +91,9 @@ test {
 
 detekt {
     version = "1.0.0.RC6-4"
-    profile("main") {
-        input = "$projectDir/src/main/kotlin"
-        config = "$projectDir/detekt.yml"
-        filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
-    }
+    input = files("src/main/kotlin")
+    config = files("detekt.yml")
+    filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
 }
 
 task copyAsciiDoc {
