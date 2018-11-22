@@ -28,6 +28,7 @@ import java.io.File
 open class Upload : AbstractArtifactoryTask() {
 
     private val targetRepoProperty = project.objects.property(String::class.java)
+    private val targetPathProperty = project.objects.property(String::class.java)
     private val artifactProperty = this.newInputFile()
 
     init {
@@ -37,6 +38,10 @@ open class Upload : AbstractArtifactoryTask() {
     @Suppress("unused")
     @get:Input
     var targetRepo: String by targetRepoProperty
+
+    @Suppress("unused")
+    @get:Input
+    var targetPath: String by targetPathProperty
 
     @get:SkipWhenEmpty
     @get:InputFile
@@ -48,7 +53,7 @@ open class Upload : AbstractArtifactoryTask() {
     @Throws(InvalidUserDataException::class)
     @TaskAction
     fun start() {
-        val result = client?.repository("")?.upload("", artifact)?.doUpload()
+        val result = client?.repository(targetRepo)?.upload(targetPath, artifact)?.doUpload()
         if(result == null) {
             throw GradleException("Return value of upload is empty!")
         }
