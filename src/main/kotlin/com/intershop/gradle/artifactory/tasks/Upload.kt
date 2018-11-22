@@ -15,25 +15,20 @@
  * See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package com.intershop.gradle.artifactory.tasks.helm
+package com.intershop.gradle.artifactory.tasks
 
 import com.intershop.gradle.artifactory.ArtifactoryRestPlugin
 import com.intershop.gradle.artifactory.getValue
 import com.intershop.gradle.artifactory.setValue
-import com.intershop.gradle.artifactory.tasks.AbstractArtifactoryRestTask
-import com.intershop.gradle.artifactory.tasks.AbstractArtifactoryTask
 import org.gradle.api.GradleException
 import org.gradle.api.InvalidUserDataException
-import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.tasks.*
-import org.jfrog.artifactory.client.ArtifactoryRequest
-import org.jfrog.artifactory.client.impl.ArtifactoryRequestImpl
 import java.io.File
 
-class HelmPublish : AbstractArtifactoryTask() {
+open class Upload : AbstractArtifactoryTask() {
 
     private val targetRepoProperty = project.objects.property(String::class.java)
-    private val inputFileProperty = this.newInputFile()
+    private val artifactProperty = this.newInputFile()
 
     init {
         group = ArtifactoryRestPlugin.COMPONENT_GROUP_NAME
@@ -45,15 +40,15 @@ class HelmPublish : AbstractArtifactoryTask() {
 
     @get:SkipWhenEmpty
     @get:InputFile
-    var file: File?
-        get() = inputFileProperty.get().asFile
-        set(value) = inputFileProperty.set(value)
+    var artifact: File?
+        get() = artifactProperty.get().asFile
+        set(value) = artifactProperty.set(value)
 
     @Suppress("unused")
     @Throws(InvalidUserDataException::class)
     @TaskAction
     fun start() {
-        val result = client?.repository("")?.upload("", file)?.doUpload()
+        val result = client?.repository("")?.upload("", artifact)?.doUpload()
         if(result == null) {
             throw GradleException("Return value of upload is empty!")
         }
