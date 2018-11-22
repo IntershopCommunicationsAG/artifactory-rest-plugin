@@ -58,27 +58,10 @@ open class SimpleUpload : AbstractArtifactoryTask() {
     @Throws(InvalidUserDataException::class)
     @TaskAction
     fun start() {
-        val result = client?.repository(targetRepo)?.upload(targetPath, artifact)?.doUpload()
+        val result = client?.repository(targetRepo)?.upload(targetPath, artifact)?.bySha1Checksum()?.doUpload()
 
         if(result == null) {
             throw GradleException("Return value of upload is empty!")
         }
-        val sha1 = client?.repository(targetRepo)?.copyBySha1(targetPath, hash(artifact));
-    }
-
-    fun hash(artifact: File): String {
-        val digest = MessageDigest.getInstance("SHA-256")
-
-        val fis = FileInputStream(artifact)
-        var n = 0
-        val buffer = ByteArray(8192)
-        while (n != -1) {
-            n = fis.read(buffer)
-            if (n > 0) {
-                digest.update(buffer, 0, n)
-            }
-        }
-
-        return digest.digest().fold("", { str, it -> str + "%02x".format(it) })
     }
 }
