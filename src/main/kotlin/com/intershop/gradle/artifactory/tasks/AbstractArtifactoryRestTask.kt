@@ -28,13 +28,8 @@ import org.jfrog.artifactory.client.Artifactory
 import org.jfrog.artifactory.client.ArtifactoryClientBuilder
 import org.jfrog.artifactory.client.ArtifactoryRequest
 
-abstract class AbstractArtifactoryRestTask: DefaultTask() {
+abstract class AbstractArtifactoryRestTask: AbstractArtifactoryTask() {
 
-    init {
-        this.setOnlyIf {
-            client != null
-        }
-    }
 
     @Suppress("unused")
     @Throws(InvalidUserDataException::class)
@@ -50,29 +45,4 @@ abstract class AbstractArtifactoryRestTask: DefaultTask() {
     }
 
     abstract val request: ArtifactoryRequest
-
-    private val client: Artifactory?
-        get() {
-            val extension = project.extensions.findByName(ArtifactoryRestPlugin.EXTENSION_NAME)
-            if(extension != null && extension is ArtifactoryExtension) {
-                return if(extension.artifactoryURL.isNotBlank()) {
-                    val artifactory = ArtifactoryClientBuilder.create()
-                            .setUrl(extension.artifactoryURL)
-                    if (extension.username.isNotBlank() && extension.password.isNotBlank()) {
-                        artifactory.username = extension.username
-                        artifactory.password = extension.password
-                    }
-                    if (extension.accesstoken.isNotBlank()) {
-                        artifactory.accessToken = extension.accesstoken
-                    }
-                    artifactory.build()
-                } else {
-                    project.logger.warn("There is no URL specified '{}'!", ArtifactoryRestPlugin.EXTENSION_NAME)
-                    null
-                }
-            } else {
-                project.logger.warn("No extension '{}' found!", ArtifactoryRestPlugin.EXTENSION_NAME)
-                return null
-            }
-        }
 }
